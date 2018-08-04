@@ -1,0 +1,51 @@
+<link rel="stylesheet" type="text/css" href="../css/stylesheet.css"/>
+<link rel="stylesheet" type="text/css" href="../css/modal.css"/>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+
+      <form id="sign_up" method="post" action="process.php">
+
+        <div class="header">
+        
+          <h3>Sign Up</h3>
+          
+          <p>Enter your details below</p>
+          
+        </div>
+        
+        <div class="sep"></div>
+
+        <div class="inputs">
+        
+          <input type="text" placeholder="First names" name="first" required />
+          
+          <input type="text" placeholder="Surname" name="surname" required/>
+        
+          <input type="email" placeholder="e-mail" 
+          pattern=".+(@capgemini)"
+          title="Please enter a valid Capgemini email address"
+          name="email" autofocus />
+        
+          <input type="password" id="password" placeholder="Enter password" name="password" required />
+          
+          <input type="password" id="password2" placeholder="Confirm password" name="passwordCheck" required/>
+          
+          <div class="checkboxy">
+            <input name="cecky" id="checky" value="1" type="checkbox" /><label class="terms">I accept the terms of use</label>
+          </div>
+          
+          <button type="submit" id="submit" href="#">SIGN UP </a>
+          
+        </div>
+        
+      </form>
+  </div>
+</div>
+
+<script src="../js/validate.js"></script>
+<script src="../js/modal.js"></script>

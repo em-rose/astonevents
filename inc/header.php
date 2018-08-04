@@ -35,7 +35,7 @@
 							<input type="password" name="password" placeholder="Password">
 							<button type="submit" name="submit">Login</button>
 						</form>
-						<a href="signup.php">Sign Up!</a>
+						<a href="register/signup.php">Sign Up!</a>
 					<?php } ?>
 				</div>
 			</div>
