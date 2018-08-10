@@ -25,36 +25,7 @@ if(isset($_GET['msg'])){
 <head>
   <title>Sign up</title>
   <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
-  <style>
-  outerBox{
 
-    background: rgba(0,0,0,0.5);
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    transition: opacity 0.6s;
-    visibility: hidden;
-    opacity: 0;
-    z-index: 10;
-  }
-
-  .outerBox:target{
-    visibility: visible;
-    opacity: 1;
-  }
-
-  .popup{ 
-    top: 50%;
-    left: 50%;
-    position: relative;
-    padding: 40px;
-    width: 50%;
-    z-index: 11;
-    transform: translate(-50%,-50%);
-  }
-
-
-</style>
 
 </head>
 <body>
