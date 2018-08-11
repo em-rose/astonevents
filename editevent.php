@@ -2,15 +2,17 @@
 require 'inc/dbconnect.php';
 if (isset($_GET['event_id'])){
   $event_id=$_GET['event_id'];
+  //get the event_id from the URL that was send from the previous page
 }
 if(isset($_POST['update'])) {
+  //if the HTML form has been posted then...
   $errMsg = '';
+  //set to NULL
     // Get data from FROM
   $name = $_POST['name'];
   $description = $_POST['description'];
   $venue = $_POST['venue'];
   $eventdate = $_POST['eventdatetime'];
-
   if ($_POST['category']=="sport"){
     $category="Sport";
   } elseif ($_POST['category']=="culture"){
@@ -28,14 +30,14 @@ if(isset($_POST['update'])) {
       $errMsg = 'Enter a description for the event';
     if(!isset($category))
       $errMsg = 'Please select event type';
-
+// error message that will be output if the form isnt correctly filled out
 
   }
 
 
   if($errMsg == ''){
     try{
-
+// if no errors then...
       $sth=$db->prepare("UPDATE `events` 
         SET
         `category`=:category,
@@ -51,13 +53,13 @@ if(isset($_POST['update'])) {
       $sth->bindParam(':description', $description, PDO::PARAM_STR, 100);
       $sth->bindParam(':venue', $venue, PDO::PARAM_INT);
       $sth->execute();
-
+//run update statement on the DB for this event id
       ?>
       <p>Successfully updated your event! </p>
       <a href='/astonevents/index.php'>Click here to go back home</a>
 
       <?php
-
+// successful message and link to go back home.
     } catch (PDOException $ex) {
 //this catches the exception when it is thrown
       ?>
@@ -67,6 +69,7 @@ if(isset($_POST['update'])) {
       <a href='/astonevents/index.php'>Back to home</a>
 
       <?php
+      //link to go home if it errors
     }
 
 
@@ -82,8 +85,9 @@ if(isset($_POST['update'])) {
 
 
 if(isset($_GET['action']) && $_GET['action'] == 'joined') {
-  $errMsg = 'Registration successful. Now you can <a href="/astonevents/inc/login.php">login</a>';
+  $errMsg = 'Event edited. Go <a href="/astonevents/index.php">home</a> to see events';
 }
+//success message output when form has been completed, links back to home page
 
 
 
@@ -91,8 +95,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'joined') {
 
 
 
-
-
+//get event details for the event id sent to the page
 
 if (isset($_GET['event_id'])){
   $event_id=$_GET['event_id'];
@@ -136,6 +139,10 @@ html, body {
 if($rows->rowCount() > 0) {
   foreach($rows as $row) {
     $eventid=$row['id'];
+
+    //output the row results to a form for editing
+    //puts the default value into the form
+    //submits and sets the php going
     ?>
 
 
@@ -149,7 +156,7 @@ if($rows->rowCount() > 0) {
             echo '<div style="color:#FF0000;text-align:center;font-size:17px;">'.$errMsg.'</div>';
           }
           ?>
-          <div style="background-color:#006D9C; color:#FFFFFF; padding:10px;"><b>Register</b></div>
+          <div style="background-color:#006D9C; color:#FFFFFF; padding:10px;"><b>Edit <?= $row['name'] ?></b></div>
           <div style="margin: 15px">
             <form action="" method="post">
               Event Name <br>
@@ -158,7 +165,7 @@ if($rows->rowCount() > 0) {
               <input type="text" name="description" value="<?= $row['description'] ?>" autocomplete="off" class="box"/><br /><br />
 
               Please Choose Category: <br>
-              Sport <input type="radio" value="student" name="category" <?php if ($row['category']=='Sport'){ ?> checked <?php } ?> required />
+              Sport <input type="radio" value="sport" name="category" <?php if ($row['category']=='Sport'){ ?> checked <?php } ?> required />
 
               Culture <input type="radio" value="culture" name="category" <?php if ($row['category']=='Culture'){ ?> checked <?php } ?> />
 
@@ -176,6 +183,7 @@ if($rows->rowCount() > 0) {
           </div>
         </div>
         <br><br><form action='/astonevents/index.php'>
+          <!-- home button -->
           <input type="submit" value="Home"/>
         </form>
       </div>
@@ -183,14 +191,7 @@ if($rows->rowCount() > 0) {
     </html>
 
 
-
-
-
-
-
     <?php
   }
 }
 ?>
-
-

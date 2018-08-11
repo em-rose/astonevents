@@ -1,12 +1,15 @@
 <?php
-require 'dbconnect.php';
+require 'inc/dbconnect.php';
+//include DB config file
+
+
 if(isset($_POST['register'])) {
 	$errMsg = '';
-		// Get data from FROM
+		// Get data from register form if it has been submitted
 	$first_name = $_POST['first_name'];
 	$surname = $_POST['surname'];
 	$email = $_POST['email'];
-
+//set the values of student and organiser depending on what was selected by the user - 1 is true, 0 is false, so if student selected:
 	if ($_POST['user_type']=="student"){
 		$student="1";
 		$organiser="0";
@@ -17,6 +20,9 @@ if(isset($_POST['register'])) {
 
 	$password = $_POST['password'];
 	$password_crypt = crypt($_POST['password'],'$1$somethin$');
+	//hash the password 
+
+	//error messages if data is missing from the form
 	if($first_name == '')
 		$errMsg = 'Enter your first name';
 	if($surname == '')
@@ -30,11 +36,10 @@ if(isset($_POST['register'])) {
 
 
 
-
-
 	if($errMsg == ''){
+		//if no error messages from the form, then continue with register
 		try{
-
+			//insert statement into users table 
 			$sth=$db->prepare("INSERT INTO `users` 
 				(`email`,
 				`password`,
@@ -59,14 +64,7 @@ if(isset($_POST['register'])) {
 			$sth->execute();
 
 
-/*
-			session_start();
-			$_SESSION['email']= $email;
-			$_SESSION['name']=$first_name;
-			$_SESSION['student']=$student;
-			$_SESSION['organiser']=$organiser;
-*/
-
+			//success message and button to go home to allow user to login
 			?>
 			<p>Successfully registered! </p>
 			<a href='/astonevents/index.php'>Click here to go back home & login</a>
@@ -74,7 +72,7 @@ if(isset($_POST['register'])) {
 			<?php
 
 		} catch (PDOException $ex) {
-//this catches the exception when it is thrown
+//this catches the exception when it is thrown by the DB insert
 			?>
 			<p>Sorry, a database error occurred. Please try again.</p>
 
@@ -88,19 +86,10 @@ if(isset($_POST['register'])) {
 	}
 }
 
-
-
-
-
-
-
-
-
-if(isset($_GET['action']) && $_GET['action'] == 'joined') {
-	$errMsg = 'Registration successful. Now you can <a href="/astonevents/inc/login.php">login</a>';
-}
 ?>
 
+
+<!-- HTMl for the register form page -->
 <html>
 <head><title>Register</title></head>
 <style>
@@ -120,27 +109,36 @@ html, body {
 			<div style="background-color:#006D9C; color:#FFFFFF; padding:10px;"><b>Register</b></div>
 			<div style="margin: 15px">
 				<form action="" method="post">
+					<!--  if the form as been submitted, it keeps the values in the form 
+						Autocomplete has been turned off for these inputs, placeholders are present-->
 					<input type="text" name="first_name" placeholder="First Name" value="<?php if(isset($_POST['first_name'])) echo $_POST['first_name'] ?>" autocomplete="off" class="box"/><br /><br />
 					<input type="text" name="surname" placeholder="Surname" value="<?php if(isset($_POST['surname'])) echo $_POST['surname'] ?>" autocomplete="off" class="box"/><br /><br />
+
+					<!-- Email address of the user - pattern is regex, checks the input against the @aston.ac.uk format -->
 					<input type="text" name="email" placeholder="Please enter a valid Aston email address" 
 					pattern="[a-z0-9._%+-]+@aston.ac.uk$"
 					value="<?php if(isset($_POST['email'])) echo $_POST['email'] ?>" autocomplete="off" class="box"/><br /><br />
 
+					<!-- Radio buttons to chose the type of user they are -->
 					Please Choose: <br>
 					Student <input type="radio" value="student" name="user_type" required />
 
 					Organiser <input type="radio" value="organiser" name="user_type" /><br /><br />
 
+
+					<!-- Pass is shown as * when input -->
 					<input type="password" name="password" placeholder="Password" value="<?php if(isset($_POST['password'])) echo $_POST['password'] ?>" class="box" /><br/><br />
 					<input type="submit" name='register' value="Register" class='submit'/><br />
+					<!-- Button to submit form and initiate the php above -->
 				</form>
 
 
 			</div>
 		</div>
-		<br><br><form action='/astonevents/index.php'>
+		<br><br><form action='index.php'>
 			<input type="submit" value="Home"/>
 		</form>
+		<!-- Button to go back home -->
 	</div>
 </body>
 </html>
